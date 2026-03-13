@@ -48,4 +48,12 @@ require("lazy").setup({
 -- that you then want to override or augment.
 require("options")   -- For general Neovim options (e.g., line numbers)
 require("keymaps")   -- For your custom keybindings
--- require("autocmds") -- Uncomment if you create this file later
+require("autocmds")  -- Autocmds and additional settings
+
+-- --- Filetype detection for C3 ---
+vim.filetype.add({
+  extension = {
+    c3 = "c3",
+    c3i = "c3",
+  },
+})
