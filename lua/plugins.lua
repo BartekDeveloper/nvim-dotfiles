@@ -226,6 +226,8 @@ return {
         ensure_installed = {
           -- C/C++/CMake
           "clangd", "cmake",
+          -- C3 Language
+          "c3-lsp",
           -- Go
           "gopls",
           -- Rust
@@ -616,28 +618,13 @@ return {
         -- This ensures the tree opens at the directory of the current file
         tab = {
           sync = {
-            open = true,
-            close = true,
+            open = false,
+            close = false,
           },
         },
         -- OLED friendly colors
         -- Note: The actual colors are handled by tokyonight setup
         -- but we can set some structural colors here
-        
-        -- Auto-expand src/ directory if it exists
-        on_attach = function(bufnr)
-          local api = require("nvim-tree.api")
-          
-          -- Expand src/ directory after tree is opened
-          vim.defer_fn(function()
-            local tree = api.tree
-            -- Try to find and expand src/ directory
-            local src_node = tree.get_node_at_path("src")
-            if src_node then
-              tree.expand_node(src_node)
-            end
-          end, 100)
-        end,
       })
       
       -- Auto-open NvimTree at start if width > 500
@@ -659,12 +646,37 @@ return {
         once = true,
       })
       
+      -- Auto-expand src/ directory after NvimTree is opened
+      vim.api.nvim_create_autocmd("BufEnter", {
+        pattern = "*",
+        callback = function()
+          local view = require("nvim-tree.view")
+          if view.is_visible() then
+            local api = require("nvim-tree.api")
+            -- Find and expand src/ directory only (direct child only)
+            local current_nodes = api.tree.get_nodes()
+            if current_nodes then
+              for _, node in ipairs(current_nodes) do
+                if node.name == "src" and node.type == "directory" then
+                  api.node.expand(node)
+                  break
+                end
+              end
+            end
+          end
+        end,
+        once = true,
+      })
+      
       -- Open default files when opening a directory
       vim.api.nvim_create_autocmd("VimEnter", {
         pattern = "*",
         callback = function()
-          -- Check if we're opening a directory (no file specified)
-          if vim.fn.argv(0) ~= "" and vim.fn.isdirectory(vim.fn.argv(0)) == 1 then
+          -- Check if we're opening a directory
+          local first_arg = vim.fn.argv(0)
+          if first_arg ~= "" and vim.fn.isdirectory(first_arg) == 1 then
+            -- Change to that directory
+            vim.cmd("cd " .. vim.fn.fnameescape(first_arg))
             local files_to_try = {
               "index.lua", "main.lua", "app.lua", "src/index.lua", "src/main.lua", "src/app.lua",
               "index.js", "main.js", "app.js", "src/index.js", "src/main.js", "src/app.js",
@@ -1009,7 +1021,7 @@ return {
     config = function()
       require("bufferline").setup({
         options = {
-          mode = "tabs",  -- Show tabpages instead of buffers
+          mode = "buffers",  -- Show buffers instead of tabs
           style_preset = {
             require("bufferline").style_preset.minimal,
           },

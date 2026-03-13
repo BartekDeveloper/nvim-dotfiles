@@ -50,11 +50,12 @@ map("n", "<leader>s", "<cmd>split<CR>", opts)
 map("n", "<leader>v", "<cmd>vsplit<CR>", opts)
 map("t", "<Esc>", "<C-\\><C-n>", opts)
 
--- Window navigation
+-- Window navigation (using Ctrl+w + direction for standard Vim navigation)
+-- Note: Ctrl+L is now used for selecting whole line
 map("n", "<C-h>", "<C-w>h", opts)
 map("n", "<C-j>", "<C-w>j", opts)
 map("n", "<C-k>", "<C-w>k", opts)
-map("n", "<C-l>", "<C-w>l", opts)
+-- map("n", "<C-l>", "<C-w>l", opts)  -- Removed: now used for selecting whole line
 
 -- NEW: Tab navigation with Alt+H and Alt+L using bufferline
 -- Bufferline provides a visual tab bar at the top
@@ -183,3 +184,8 @@ map("n", "<leader>", "<cmd>WhichKey '<leader>'<CR>", { desc = "Show WhichKey" })
 map("n", "<leader>im", function()
   require("image").toggle()
 end, { desc = "Toggle image viewing" })
+
+-- Ctrl+L to select whole line (visual mode)
+map("x", "<C-l>", "V", { desc = "Select whole line" })
+-- Ctrl+L to select current line in normal mode
+map("n", "<C-l>", "V", { desc = "Select current line" })
