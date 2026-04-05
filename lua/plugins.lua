@@ -31,7 +31,7 @@ return {
           colors.bg_sidebar = "#000000"
           colors.bg_float = "#000000"
           colors.bg_statusline = "#000000"
-          colors.bg_highlight = "#121212"
+          colors.bg_highlight = "#4a4a4a"
           
           -- Dark grayish borders (no white)
           colors.border = "#2a2a2a"
@@ -43,6 +43,7 @@ return {
           colors.fg_sidebar = "#c0c0c0"
         end,
         on_highlights = function(hl, colors)
+          hl.NvimTreeVisual = { bg = "#030303" }
           -- Border highlights for floating windows
           hl.NormalFloat = { bg = colors.bg_float, fg = colors.fg }
           hl.FloatBorder = { bg = colors.bg_float, fg = colors.border }
@@ -83,7 +84,7 @@ return {
           hl.TabLineFill = { bg = colors.black }
           
           -- Cursor line/column (dark gray instead of bright)
-          hl.CursorLine = { bg = colors.bg_highlight }
+          hl.CursorLine = { bg = colors.bg }
           hl.CursorLineNr = { bg = colors.bg, fg = colors.fg }
           hl.LineNr = { bg = colors.bg, fg = colors.comment }
           
@@ -1168,9 +1169,13 @@ return {
 
   {
     "folke/flash.nvim",
+    enabled = false,
     event = "VeryLazy",
     config = function()
       require("flash").setup({
+        search = {
+          enabled = false,
+        },
         labels = "asdfghjklqwertyuiopzxcvbnm",
         search = {
           forward = true,
@@ -1264,8 +1269,8 @@ return {
     "kevinhwang91/nvim-hlslens",
     config = function()
       require("hlslens").setup()
-      vim.keymap.set("n", "n", "<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').cycle()<CR>", {})
-      vim.keymap.set("n", "N", "<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').cycle(-1)<CR>", {})
+      vim.keymap.set("n", "n", "<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>", {})
+      vim.keymap.set("n", "N", "<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>", {})
       vim.keymap.set("n", "*", "*<Cmd>lua require('hlslens').start()<CR>", {})
       vim.keymap.set("n", "#", "#<Cmd>lua require('hlslens').start()<CR>", {})
       vim.keymap.set("n", "g*", "g*<Cmd>lua require('hlslens').start()<CR>", {})

@@ -189,3 +189,6 @@ end, { desc = "Toggle image viewing" })
 map("x", "<C-l>", "V", { desc = "Select whole line" })
 -- Ctrl+L to select current line in normal mode
 map("n", "<C-l>", "V", { desc = "Select current line" })
+
+-- Clear search highlights
+map("n", "<Leader>l", "<Cmd>noh<CR>", { desc = "Clear search highlights" })
