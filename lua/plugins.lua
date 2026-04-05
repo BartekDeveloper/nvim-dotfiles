@@ -227,8 +227,7 @@ return {
         ensure_installed = {
           -- C/C++/CMake
           "clangd", "cmake",
-          -- C3 Language
-          "c3-lsp",
+
           -- Go
           "gopls",
           -- Rust
@@ -705,6 +704,13 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
       -- Keymaps moved to keymaps.lua
+    end,
+  },
+
+  {
+    "nvim-telescope/telescope-live-grep-args.nvim",
+    config = function()
+      require("telescope").load_extension("live_grep_args")
     end,
   },
 

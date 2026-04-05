@@ -118,18 +118,12 @@ map("n", "<leader>fk", "<cmd>Telescope keymaps<CR>", { desc = "Telescope keymaps
 map("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", { desc = "Telescope help tags" })
 map("n", "<leader>ft", "<cmd>Telescope treesitter<CR>", { desc = "Telescope treesitter" })
 
--- Better search with flash
-vim.keymap.set({ "n", "x", "o" }, "f", function()
-  require("flash").jump({
-    search = { forward = true, wrap = false, multi_window = false },
-  })
-end, { desc = "Flash forward" })
+-- Telescope keybindings
+map("n", "ff", "<cmd>Telescope find_files<CR>", { desc = "Find files" })
+map("n", "fg", "<cmd>Telescope live_grep<CR>", { desc = "Live grep" })
+map("n", "<leader>fa", "<cmd>Telescope live_grep_args<CR>", { desc = "Live grep with args" })
 
-vim.keymap.set({ "n", "x", "o" }, "F", function()
-  require("flash").jump({
-    search = { forward = false, wrap = false, multi_window = false },
-  })
-end, { desc = "Flash backward" })
+
 
 -- Insert mode deletions
 vim.keymap.set("i", "<C-Del>", "<C-w>", { desc = "Delete word backward (like Ctrl+Backspace)" })
