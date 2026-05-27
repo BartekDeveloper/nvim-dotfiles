@@ -186,3 +186,74 @@ map("n", "<C-l>", "V", { desc = "Select current line" })
 
 -- Clear search highlights
 map("n", "<Leader>l", "<Cmd>noh<CR>", { desc = "Clear search highlights" })
+
+
+-- Get directory of current file (NOT cwd)
+local function get_current_file_dir()
+  local current_file = vim.fn.expand("%:p")
+  if current_file == "" then
+    return vim.fn.getcwd()
+  end
+  return vim.fn.fnamemodify(current_file, ":h")
+end
+
+-- Create new file
+local function create_file()
+  local dir = get_current_file_dir()
+
+  vim.ui.input({
+    prompt = "New file: ",
+    default = dir .. "/",
+  }, function(input)
+    if not input or input == "" then return end
+
+    local ok, err = pcall(function()
+      local file_dir = vim.fn.fnamemodify(input, ":h")
+      vim.fn.mkdir(file_dir, "p")
+
+      if vim.fn.filereadable(input) == 0 then
+        vim.fn.writefile({}, input)
+      end
+
+      vim.cmd("edit " .. vim.fn.fnameescape(input))
+      vim.notify("Created file: " .. input, vim.log.levels.INFO)
+    end)
+
+    if not ok then
+      vim.notify("Error: " .. err, vim.log.levels.ERROR)
+    end
+  end)
+end
+
+-- Create new directory
+local function create_dir()
+  local dir = get_current_file_dir()
+
+  vim.ui.input({
+    prompt = "New directory: ",
+    default = dir .. "/",
+  }, function(input)
+    if not input or input == "" then return end
+
+    local ok, err = pcall(function()
+      vim.fn.mkdir(input, "p")
+      vim.notify("Created directory: " .. input, vim.log.levels.INFO)
+    end)
+
+    if not ok then
+      vim.notify("Error: " .. err, vim.log.levels.ERROR)
+    end
+  end)
+end
+
+-- KEYMAPS
+
+-- Ctrl + Numpad5 → file
+vim.keymap.set("n", "<C-k5>", create_file, {
+  desc = "Create file in current file directory",
+})
+
+-- Ctrl + Numpad2 → directory
+vim.keymap.set("n", "<C-k2>", create_dir, {
+  desc = "Create directory in current file directory",
+})

@@ -4,7 +4,7 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
-vim.lsp.set_log_level("INFO")
+-- vim.lsp.set_log_level("INFO")
 
 -- --- Lazy.nvim (plugin manager) setup ---
 -- Define the path where Lazy.nvim will be installed
@@ -42,6 +42,8 @@ require("lazy").setup({
   -- Concurrency: How many plugins to install/update at once
   concurrency = 10,
 })
+
+vim.keymap.set("n", "*", "<Nop>", { silent = true })
 
 -- --- Load your custom configuration files ---
 -- These are loaded *after* plugins, as plugins might set up defaults

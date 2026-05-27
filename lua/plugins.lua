@@ -565,7 +565,7 @@ return {
       require("nvim-tree").setup({
         sort_by = "case_sensitive",
         view = {
-          width = 15,
+          width = 28,
           relativenumber = false,
           float = {
             enable = false,
