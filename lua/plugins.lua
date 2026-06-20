@@ -537,12 +537,14 @@ return {
     end,
   },
 
+  --[[
   {
     "windwp/nvim-ts-autotag",
     ft = { "html","javascriptreact","typescriptreact","xml","php" },
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     config = function() require("nvim-ts-autotag").setup() end,
   },
+  ]]--
 
   {
     "stevearc/conform.nvim",
